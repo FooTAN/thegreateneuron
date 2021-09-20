@@ -1,0 +1,18 @@
+FROM mcr.microsoft.com/dotnet/sdk:5.0 AS build-env
+
+ENV DOTNET_USE_POLLING_FILE_WATCHER 1
+WORKDIR /app
+COPY ["src/API/API.csproj", "src/API/"]
+COPY ["src/Application/Application.csproj", "src/Application/"]
+COPY ["src/Infrastructure/Infrastructure.csproj", "src/Infrastructure/"]
+COPY ["src/Domain/Domain.csproj", "src/Domain/"]
+
+#restore
+RUN dotnet restore "src/API/API.csproj"
+#run
+COPY . .
+WORKDIR /app/src/API
+
+EXPOSE 5000
+
+ENTRYPOINT [ "dotnet", "watch", "run", "--no-restore", "--urls=http://+:5000"]

@@ -1,0 +1,9 @@
+{
+    "$schema": "http://json.schemastore.org/template",
+    "author": "TAN",
+    "classifications": [ "API", "Web"],
+    "identity": "TAN.APITemplate.CSharp",
+    "name": "TAN API",
+    "shortName": "tanapi",
+    "sourceName": "tandotnetapi"
+  }
