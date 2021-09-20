@@ -16,11 +16,11 @@ spec:
               service:
                 name: auth-clusterip-srv
                 port: 
-                  number: 5000
+                  number: 9081
           - path: /?(.*)
             pathType: Prefix
             backend:
               service:
                 name: auth-clusterip-srv
                 port: 
-                  number: 5000
+                  number: 9080
