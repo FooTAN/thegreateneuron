@@ -30,7 +30,7 @@ namespace Application.Users.Queries.GetUser
         {
             var user = await _context.Users.FindAsync(request.Id);
 
-            return new AppUserDto { UserName = user.UserName };
+            return new AppUserDto { UserName = user.UserName, IsAdmin = user.IsAdmin };
         }
     }
 }

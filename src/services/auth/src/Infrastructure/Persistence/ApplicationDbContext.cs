@@ -18,7 +18,6 @@ namespace Infrastructure.Persistence
         }
 
         public DbSet<ApplicationUser> Users { get; set; }
-
         protected override void OnModelCreating(ModelBuilder builder)
         {
             builder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());

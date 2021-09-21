@@ -26,7 +26,7 @@ namespace auth
                 {
                     var context = services.GetRequiredService<ApplicationDbContext>();
 
-                    await ApplicationDbContextSeed.SeedUsers(context);
+                    await ApplicationDbContextSeed.SeedUsers(context, services);
                 }
                 catch (Exception ex)
                 {

@@ -1,6 +1,7 @@
 ﻿using Application.Users;
 using Application.Users.Queries.GetUser;
 using Application.Users.Queries.GetUsers;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -11,6 +12,7 @@ namespace API.Controllers
 {
     public class UsersController : ApiControllerBase
     {
+        [Authorize]
         [HttpGet]
         public async Task<IEnumerable<AppUserDto>> GetUsers()
         {

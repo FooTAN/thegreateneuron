@@ -1,5 +1,6 @@
 ﻿using Application.Common.Interfaces;
 using Infrastructure.Persistence;
+using Infrastructure.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -15,6 +16,7 @@ namespace Infrastructure
             });
 
             services.AddScoped<IApplicationDbContext>(provider => provider.GetService<ApplicationDbContext>());
+            services.AddScoped<ITokenService, TokenService>();
 
             return services;
         }

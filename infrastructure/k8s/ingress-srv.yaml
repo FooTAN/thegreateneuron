@@ -10,7 +10,7 @@ spec:
     - host: localhost
       http:
         paths:
-          - path: /auth/?(.*)
+          - path: /api/auth/?(.*)
             pathType: Prefix
             backend:
               service:

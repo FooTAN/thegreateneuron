@@ -17,7 +17,9 @@ spec:
           image: thegreatneuron/auth
           env:
             - name: "AUTH_PATH_BASE"
-              value: "/auth"
+              value: "/api/auth"
+            - name: "SECRET_KEY"
+              value: "very long super secret key"
 ---
 apiVersion: v1
 kind: Service

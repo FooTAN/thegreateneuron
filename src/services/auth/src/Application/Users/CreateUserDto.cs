@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace Application.Users
 {
-    public class AppUserDto
+    public class CreateUserDto
     {
         public string UserName { get; set; }
-        public bool IsAdmin { get; set; }
+        public string Password { get; set; }
     }
 }
