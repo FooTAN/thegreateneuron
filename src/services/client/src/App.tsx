@@ -1,7 +1,6 @@
 import React from 'react';
-import logo from './logo.svg';
 import './App.css';
-import GotoSignup from './components/GotoSignup';
+import UsersView from './components/UsersView';
 
 function App() {
   return (
@@ -33,6 +32,7 @@ function App() {
     </div>
   </section>
     <h2 className="display-6 text-center mb-4">Latest Dog vs Cat Comparison</h2>
+    <UsersView></UsersView>
 </main>
 
   <footer className="pt-4 my-md-5 pt-md-5 border-top">
