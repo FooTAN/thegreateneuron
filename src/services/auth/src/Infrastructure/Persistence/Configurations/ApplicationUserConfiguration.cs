@@ -28,7 +28,8 @@ namespace Infrastructure.Persistence.Configurations
                 .HasColumnType("BLOB");
             builder.Property(au => au.Roles)
                 .HasColumnName("Roles")
-                .HasColumnType("varchar");
+                .HasColumnType("varchar")
+                .HasMaxLength(9999);
         }
     }
 }

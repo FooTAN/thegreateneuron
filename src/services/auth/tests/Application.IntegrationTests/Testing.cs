@@ -57,24 +57,12 @@ public class Testing
         // Register testing version
         services.AddTransient(provider =>
             Mock.Of<ICurrentUserService>(s => s.UserId == _currentUserId));
-
+        services.AddSingleton<IConfiguration>(x=> _configuration);
         _scopeFactory = services.BuildServiceProvider().GetService<IServiceScopeFactory>();
 
         _checkpoint = new Checkpoint
         {
-            TablesToIgnore = new[] { "__EFMigrationsHistory" }
         };
-
-        //EnsureDatabase();
-    }
-
-    private static void EnsureDatabase()
-    {
-        using var scope = _scopeFactory.CreateScope();
-
-        var context = scope.ServiceProvider.GetService<ApplicationDbContext>();
-
-        context.Database.Migrate();
     }
 
     public static async Task<TResponse> SendAsync<TResponse>(IRequest<TResponse> request)

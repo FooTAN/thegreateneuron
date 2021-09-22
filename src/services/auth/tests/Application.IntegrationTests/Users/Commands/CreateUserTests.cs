@@ -30,9 +30,10 @@ namespace Application.IntegrationTests.Users.Commands
         [Test]
         public async Task Should_Create_New_User()
         {
-            var userId = await RunAsDefaultUserAsync();
-            userId.Should().NotBeNull();
+            var command = new CreateUserCommand { UserName = "FooUser", Password = "password" };
+            var userWithToken = await SendAsync(command);
 
+            userWithToken.UserName.Should().Be("foouser");
         }
     }
 }
