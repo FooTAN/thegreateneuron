@@ -7,7 +7,7 @@ CREATE TABLE `Users` (
   `UserName` varchar(99) CHARACTER SET utf8 NOT NULL,
   `PasswordHash` BLOB,
   `PasswordSalt` BLOB,
-  `IsAdmin` tinyint(1),
+  `Roles` VARCHAR,
   PRIMARY KEY (`Id`),
   UNIQUE KEY `UC_User` (`Id`,`UserName`)
 );

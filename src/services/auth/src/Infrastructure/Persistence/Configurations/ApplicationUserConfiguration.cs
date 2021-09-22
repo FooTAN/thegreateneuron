@@ -26,9 +26,9 @@ namespace Infrastructure.Persistence.Configurations
             builder.Property(au => au.PasswordSalt)
                 .HasColumnName("PasswordSalt")
                 .HasColumnType("BLOB");
-            builder.Property(au => au.IsAdmin)
-                .HasColumnName("IsAdmin")
-                .HasColumnType("tinyint");
+            builder.Property(au => au.Roles)
+                .HasColumnName("Roles")
+                .HasColumnType("varchar");
         }
     }
 }

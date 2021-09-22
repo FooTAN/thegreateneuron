@@ -6,11 +6,8 @@ using System.Threading.Tasks;
 
 namespace Application.Common.Exceptions
 {
-    public class UserExistException : Exception
+    public class ForbiddenAccessException : Exception
     {
-        public UserExistException(string userName) : base(userName + " already exist.")
-        {
-
-        }
+        public ForbiddenAccessException() : base() { }
     }
 }

@@ -18,19 +18,21 @@ namespace Application.Users.Queries.GetUser
 
     public class GetUserQueryHandler : IRequestHandler<GetUserQuery, AppUserDto>
     {
-        public GetUserQueryHandler(IApplicationDbContext context)
+        public GetUserQueryHandler(IAuthService authService)
         {
-            _context = context;
+            _authService = authService;
 
         }
 
-        private readonly IApplicationDbContext _context;
+        private readonly IAuthService _authService;
 
         public async Task<AppUserDto> Handle(GetUserQuery request, CancellationToken cancellationToken)
         {
-            var user = await _context.Users.FindAsync(request.Id);
+            var user = await _authService.GetUserAsync(request.Id);
+            if (user == null)
+                throw new UnauthorizedAccessException();
 
-            return new AppUserDto { UserName = user.UserName, IsAdmin = user.IsAdmin };
+            return new AppUserDto { UserName = user.UserName, Roles = user.Roles };
         }
     }
 }
