@@ -17,49 +17,30 @@ namespace Application.Users.Commands.CreateUser
     {
         public string UserName { get; set; }
         public string Password { get; set; }
-        public bool IsAdmin { get; set; }
-
     }
 
     public class CreateUserCommandHandler : IRequestHandler<CreateUserCommand, UserWithTokenDto>
     {
-        public CreateUserCommandHandler(IApplicationDbContext context, ITokenService tokenService)
+        public CreateUserCommandHandler(ITokenService tokenService, IAuthService authService)
         {
-            _context = context;
             _tokenService = tokenService;
+            _authService = authService;
         }
 
-        private readonly IApplicationDbContext _context;
         private readonly ITokenService _tokenService;
+        private readonly IAuthService _authService;
         public async Task<UserWithTokenDto> Handle(CreateUserCommand request, CancellationToken cancellationToken)
         {
-            if (await UserExist(request.UserName))
-                throw new UserExistException(request.UserName);
+            var user = await _authService.CreateUserAsync(request.UserName, request.Password, cancellationToken);
 
-            ApplicationUser user = null;
-            using (var hmac = new HMACSHA512())
-            {
-                user = new ApplicationUser
-                {
-                    UserName = request.UserName.ToLower(),
-                    IsAdmin = request.IsAdmin,
-                    PasswordHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(request.Password)),
-                    PasswordSalt = hmac.Key
-                };
-            }
+            if (user == null)
+                throw new UnauthorizedAccessException();
 
-            _context.Users.Add(user);
-            await _context.SaveChangesAsync(cancellationToken);
             return new UserWithTokenDto
             {
                 UserName = user.UserName,
                 Token = _tokenService.CreateToken(user)
             };
-        }
-
-        public async Task<bool> UserExist(string username)
-        {
-            return await _context.Users.AnyAsync(x => x.UserName == username.ToLower());
         }
     }
 }

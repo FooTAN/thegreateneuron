@@ -1,4 +1,5 @@
 using API.Filters;
+using API.Services;
 using Application;
 using Application.Common.Interfaces;
 using FluentValidation.AspNetCore;
@@ -35,6 +36,8 @@ namespace auth
         {
             services.AddApplication();
             services.AddInfrastructure(Configuration);
+
+            services.AddSingleton<ICurrentUserService, CurrentUserService>();
 
             services.AddControllers(options => options.Filters.Add<ApiExceptionFilterAttribute>())
                 .AddFluentValidation(x => x.AutomaticValidationEnabled = false);

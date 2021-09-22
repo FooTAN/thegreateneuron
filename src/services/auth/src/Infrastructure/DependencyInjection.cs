@@ -11,13 +11,22 @@ namespace Infrastructure
     {
         public static IServiceCollection AddInfrastructure(this IServiceCollection services, IConfiguration configuration)
         {
-            services.AddDbContext<ApplicationDbContext>(options => {
-                options.UseMySQL(configuration.GetConnectionString("DefaultConnection"));
-            });
+            if (configuration.GetValue<bool>("UseInMemoryDatabase"))
+            {
+                services.AddDbContext<ApplicationDbContext>(options =>
+                    options.UseInMemoryDatabase("MemoryDb"));
+            }
+            else
+            {
+                services.AddDbContext<ApplicationDbContext>(options => {
+                    options.UseMySQL(configuration.GetConnectionString("DefaultConnection"));
+                });
+            }
+
 
             services.AddScoped<IApplicationDbContext>(provider => provider.GetService<ApplicationDbContext>());
             services.AddScoped<ITokenService, TokenService>();
-
+            services.AddScoped<IAuthService, AuthService>();
             return services;
         }
     }

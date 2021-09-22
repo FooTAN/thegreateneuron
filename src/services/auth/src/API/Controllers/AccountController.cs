@@ -12,7 +12,7 @@ namespace API.Controllers
         [HttpPost("createuser")]
         public async Task<ActionResult<UserWithTokenDto>> CreateUser([FromBody]CreateUserDto createUserDto)
         {
-            var userWithToken = await Mediator.Send(new CreateUserCommand { UserName = createUserDto.UserName, Password = createUserDto.Password, IsAdmin = false });
+            var userWithToken = await Mediator.Send(new CreateUserCommand { UserName = createUserDto.UserName, Password = createUserDto.Password});
             HttpContext.Response.Cookies.Append("tgn-auth-token", userWithToken.Token);
             return userWithToken;
         }

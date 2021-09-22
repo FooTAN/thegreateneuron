@@ -26,7 +26,7 @@ namespace Application.Users.Queries.GetUsers
 
         public async Task<IEnumerable<AppUserDto>> Handle(GetAllUsersQuery request, CancellationToken cancellationToken)
         {
-            return await _context.Users.Select(x => new AppUserDto { UserName = x.UserName, IsAdmin = x.IsAdmin }).ToListAsync();
+            return await _context.Users.Select(x => new AppUserDto { UserName = x.UserName, Roles = x.Roles }).ToListAsync();
         }
     }
 }

@@ -18,10 +18,10 @@ namespace Infrastructure.Persistence
 
             if(!context.Users.Any())
             {
-                await mediator.Send(new CreateUserCommand { UserName = "admin", Password = "password", IsAdmin = true });
-                await mediator.Send(new CreateUserCommand { UserName = "FooUser", Password = "password", IsAdmin = false });
-                await mediator.Send(new CreateUserCommand { UserName = "BarUser", Password = "password", IsAdmin = false });
-                await mediator.Send(new CreateUserCommand { UserName = "HelloUser", Password = "password", IsAdmin = false });
+                await mediator.Send(new CreateUserCommand { UserName = "admin", Password = "password"});
+                await mediator.Send(new CreateUserCommand { UserName = "FooUser", Password = "password"});
+                await mediator.Send(new CreateUserCommand { UserName = "BarUser", Password = "password"});
+                await mediator.Send(new CreateUserCommand { UserName = "HelloUser", Password = "password"});
 
             }
         }

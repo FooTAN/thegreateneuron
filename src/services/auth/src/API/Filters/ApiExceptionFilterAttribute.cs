@@ -17,8 +17,8 @@ namespace API.Filters
             _exceptionHandlers = new Dictionary<Type, Action<ExceptionContext>>
             {
                 { typeof(ValidationException), HandleValidationException },
-                { typeof(UserExistException), HandleUserExistException },
-                { typeof(UnauthorizedAccessException), HandleUnauthorizedAccessException },    
+                { typeof(UnauthorizedAccessException), HandleUnauthorizedAccessException },
+                { typeof(ForbiddenAccessException), HandleForbiddenAccessException },
             };
         }
 
@@ -63,18 +63,18 @@ namespace API.Filters
             context.ExceptionHandled = true;
         }
 
-        private void HandleUserExistException(ExceptionContext context)
+        private void HandleForbiddenAccessException(ExceptionContext context)
         {
             var details = new ProblemDetails
             {
-                Status = StatusCodes.Status401Unauthorized,
-                Title = "Unauthorized",
-                Type = "https://tools.ietf.org/html/rfc7235#section-3.1"
+                Status = StatusCodes.Status403Forbidden,
+                Title = "Forbidden",
+                Type = "https://tools.ietf.org/html/rfc7231#section-6.5.3"
             };
 
             context.Result = new ObjectResult(details)
             {
-                StatusCode = StatusCodes.Status401Unauthorized
+                StatusCode = StatusCodes.Status403Forbidden
             };
 
             context.ExceptionHandled = true;
