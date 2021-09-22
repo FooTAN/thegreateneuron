@@ -33,7 +33,7 @@ namespace Application.IntegrationTests.Users.Commands
             var command = new CreateUserCommand { UserName = "FooUser", Password = "password" };
             var userWithToken = await SendAsync(command);
 
-            userWithToken.UserName.Should().Be("FooUser");
+            userWithToken.UserName.Should().Be("foouser");
         }
     }
 }

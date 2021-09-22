@@ -31,9 +31,7 @@ namespace Application.Users.Commands.CreateUser
         private readonly IAuthService _authService;
         public async Task<UserWithTokenDto> Handle(CreateUserCommand request, CancellationToken cancellationToken)
         {
-            Console.WriteLine("One");
             var user = await _authService.CreateUserAsync(request.UserName, request.Password, cancellationToken);
-            Console.WriteLine("Two");
 
             if (user == null)
                 throw new UnauthorizedAccessException();
