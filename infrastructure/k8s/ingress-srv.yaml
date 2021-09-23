@@ -10,6 +10,13 @@ spec:
     - host: localhost
       http:
         paths:
+          - path: /api/article/?(.*)
+            pathType: Prefix
+            backend:
+              service:
+                name: article-clusterip-srv
+                port:
+                  number: 9083
           - path: /api/auth/?(.*)
             pathType: Prefix
             backend:

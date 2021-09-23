@@ -1,6 +1,6 @@
 import React from 'react';
-import './App.css';
-import UsersView from './components/UsersView';
+import './style.css';
+import UsersView from '../../components/UsersView';
 
 function App() {
   return (

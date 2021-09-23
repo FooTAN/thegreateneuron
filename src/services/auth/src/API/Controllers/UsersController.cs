@@ -12,12 +12,18 @@ namespace API.Controllers
 {
     public class UsersController : ApiControllerBase
     {
-        [Authorize]
         [HttpGet]
         public async Task<IEnumerable<AppUserDto>> GetUsers()
         {
             return await Mediator.Send(new GetAllUsersQuery());
         }
+
+        [HttpGet("test")]
+        public async Task<string> GetTest()
+        {
+            return "Hello WOrld";
+        }
+
 
         [HttpGet("{id}")]
         public async Task<ActionResult<AppUserDto>> GetUser(Guid id)

@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: article-mongodb-depl
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: article-mongodb
+  template:
+    metadata:
+      labels:
+        app: article-mongodb
+    spec:
+      containers:
+        - name: article-mongodb
+          image: mongo
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: article-mongodb-clusterip-srv
+spec:
+  selector:
+    app: article-mongodb
+  ports:
+    - name: article-mongodb
+      protocol: TCP
+      port: 27017
+      targetPort: 27017

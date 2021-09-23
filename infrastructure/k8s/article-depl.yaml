@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: article-depl
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: article
+  template:
+    metadata:
+      labels:
+        app: article
+    spec:
+      containers:
+        - name: article
+          image: thegreatneuron/article
+          env:
+            - name: JWT_SECRET_KEY
+              value: "super secret very long key"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: article-clusterip-srv
+spec:
+  selector:
+    app: article
+  ports:
+    - name: article
+      protocol: TCP
+      port: 9083
+      targetPort: 3000
