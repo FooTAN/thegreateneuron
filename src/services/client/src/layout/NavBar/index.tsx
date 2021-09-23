@@ -1,6 +1,6 @@
 import React from 'react'
 
-function index() {
+function NavBar() {
     
     return (
         <div className="d-flex flex-column flex-md-row align-items-center pb-3 mb-4 border-bottom">
@@ -16,4 +16,4 @@ function index() {
     )
 }
 
-export default index
+export default NavBar
