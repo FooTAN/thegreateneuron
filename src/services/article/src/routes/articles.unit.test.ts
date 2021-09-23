@@ -8,5 +8,5 @@ it('response with details about the current user', async() =>{
         })
         .expect(200);
 
-        console.log(response.body);
+        console.log(response.body);//
 });
