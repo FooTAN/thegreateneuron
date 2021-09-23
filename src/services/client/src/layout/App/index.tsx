@@ -1,6 +1,7 @@
 import React from 'react';
-import './style.css';
+import './style.scss';
 import UsersView from '../../components/UsersView';
+import ArticleFeaturette from '../../components/ArticleFeaturette';
 
 function App() {
   return (
