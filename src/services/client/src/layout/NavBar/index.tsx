@@ -1,4 +1,5 @@
-import React from 'react'
+import React from 'react';
+import LoginButton from '../../components/LoginButton';
 
 function NavBar() {
     
@@ -10,7 +11,7 @@ function NavBar() {
   
             <nav className="d-inline-flex mt-2 mt-md-0 ms-md-auto">
             <a className="me-3 py-2 text-dark text-decoration-none" href="/admin/signup/">TmpAdmin</a>
-            <a className="py-2 text-dark text-decoration-none" href="#">Login</a>
+            <LoginButton></LoginButton>
             </nav>
       </div>
     )
