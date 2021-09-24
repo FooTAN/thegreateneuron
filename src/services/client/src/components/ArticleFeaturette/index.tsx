@@ -1,28 +1,39 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { Article } from '../../models/article';
+import './style.scss';
 
-function ArticleFeaturette(article:Article) {
-    const [articles, setArticles] = useState([]);
+interface Props{
+    article: Article;
+  }
 
-    useEffect(()=>{
-        axios.get('/api/article/list').then(response => {
-            setArticles(response.data);
-        });
-
-        console.log(articles);
-    }, []);
-
+function ArticleFeaturette({article}:Props) {
   return (
-      <div>
-          Users
-          <ul>
-              {articles.map((article: any) => (
-              <li key={article.id}>
-                  {article.title}
-              </li>
-              ))}
-          </ul>
+    <div className="container articleFeaturette">
+        <div className="row">
+            <div className="col">
+                <h3>{article.title}</h3>
+            </div>
+        </div>
+        <div className="row">
+            <div className="col">
+                <span className="articleInfo articleInfo__text--default"><small>By: FooUser Created:01.01.1979 updated: 02.02.1980</small></span>
+            </div>
+        </div>
+        <div className="row">
+            <div className="col">
+                <div className="mt-2">
+                {article.content.substring(0, 100)}
+                </div>
+            </div>
+        </div>
+        <div className="row">
+            <div className="col">
+            <div className="mt-3">
+                <a href="#">Readmore</a>
+            </div>
+            </div>
+        </div>
       </div>
   );
 }
