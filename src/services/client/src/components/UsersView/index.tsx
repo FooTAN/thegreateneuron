@@ -1,20 +1,27 @@
 import React, { useEffect, useState } from 'react';
-import axios from 'axios';
+import useFetch from '../../hooks/useFetch';
+import { User, Users } from '../../models/user';
 
 function UsersView() {
-    const [users, setUsers] = useState([]);
+    const [shouldFetch, setShouldFetch] = useState(true);
+    const [usersCollection, setUsersCollection] = useState<Users>();
+
+    const {response} = useFetch(true, "/api/auth/users");
 
     useEffect(()=>{
-        axios.get('/api/auth/users').then(response => {
-            setUsers(response.data);
-        });
-    }, []);
+        //var u = <User[]>JSON.parse(JSON.stringify(response));
+        //console.log("FO: "+   response is User[]);¨
+        setUsersCollection(response as Users);
+
+    }, [shouldFetch]);
 
   return (
       <div>
           Users
+          {console.log("Booooooo: "+ JSON.stringify(response))}
+        {console.log("FOs: "+ JSON.stringify(usersCollection)+":"+usersCollection?.users.length)}
           <ul>
-              {users.map((user: any) => (
+              {(usersCollection && usersCollection.users)&& usersCollection.users.map((user: User) => (
               <li key={user.userName}>
                   {user.userName}
               </li>
