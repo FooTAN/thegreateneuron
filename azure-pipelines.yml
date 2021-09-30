@@ -80,3 +80,16 @@ stages:
           TF_VAR_cluster_dns_prefix: $(cluster_dns_prefix)
           TF_VAR_rg_name: $(rg_name)
           TF_VAR_rg_location: $(rg_location)
+- stage: Deploy
+  displayName: 'Deploy to kubernetes'
+  dependsOn: Provision
+  jobs:
+    - job: DeployArticleService
+      displayName: 'Deploying Article Service'
+      pool:
+        vmImage: ubuntu-latest
+      steps:
+      - task: kubectlapply@3
+        inputs:
+          k8sService: 'k8s_service_connection'
+          yamlfile: '$(Build.SourcesDirectory)/infrastructure/k8s/article-depl.yaml'
