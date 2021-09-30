@@ -26,12 +26,12 @@ stages:
           If ($changedfiles -and $changedfiles.Contains("src/service/article"))  {
             echo "##vso[task.setvariable variable=IfRunDockerBuild;isOutput=true]run"
           }
-    - task: CmdLine@2
+    - task: PublishPipelineArtifact@1
       inputs:
-        script: |
-          echo "Test"
-          cd $(Pipeline.Workspace)/s
-          ls
+        targetPath: '$(Pipeline.Workspace)/s/infrastructure/k8s'
+        artifact: 'manifests'
+        publishLocation: 'pipeline'
+        
   - job: DockerBuild
     displayName: Docker Build
     dependsOn: checkIfShouldBuildDocker
@@ -99,15 +99,14 @@ stages:
       strategy:
         runOnce:
           deploy:
-            steps:             
-            - task: CmdLine@2
+            steps:
+            - task: DownloadPipelineArtifact@2
               inputs:
-                script: |
-                  echo "Test"
-                  cd $(Pipeline.Workspace)
-                  ls
+                buildType: 'current'
+                artifactName: 'manifests'
+                targetPath: '$(Pipeline.Workspace)/manifests'
             - task: KubernetesManifest@0
               inputs:
                 action: 'deploy'
                 kubernetesServiceConnection: 'k8s_service_connection'
-                manifests: '$(Pipeline.Workspace)/s/manifests/article-depl.yaml'
+                manifests: '$(Pipeline.Workspace)/manifests/article-depl.yaml'
