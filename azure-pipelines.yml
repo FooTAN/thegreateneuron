@@ -43,11 +43,6 @@ stages:
         buildContext: '$(Build.SourcesDirectory)/src/services/article/'
         tags: |
           $(tag)
-    - task: PublishPipelineArtifact@1
-      inputs:
-        targetPath: '$(Pipeline.Workspace)/s/infrastructure/k8s'
-        artifact: 'manifests'
-        publishLocation: 'pipeline'
 
 - stage: Provision
   displayName: 'terraforming'
@@ -107,10 +102,10 @@ stages:
             - task: CmdLine@2
               inputs:
                 script: |
-                  cd $(Pipeline.Workspace)
+                  cd $(Pipeline.Workspace/s)
                   ls
             - task: KubernetesManifest@0
               inputs:
                 action: 'deploy'
                 kubernetesServiceConnection: 'k8s_service_connection'
-                manifests: '$(Pipeline.Workspace)/manifests/article-depl.yaml'
+                manifests: '$(Pipeline.Workspace)/s/manifests/article-depl.yaml'
