@@ -98,4 +98,4 @@ stages:
               inputs:
                 action: 'deploy'
                 kubernetesServiceConnection: 'k8s_service_connection'
-                manifests: '$(Build.ArtifactStagingDirectory)/infrastructure/k8s/article-depl.yaml'
+                manifests: '$(Build.SourcesDirectory)/infrastructure/k8s/article-depl.yaml'
