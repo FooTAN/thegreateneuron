@@ -35,5 +35,5 @@ terraform.rc
 
 kubeconfig
 
-# not strictly necessary
+# not strictly necessary in our scenario
 .terraform.lock.hcl
