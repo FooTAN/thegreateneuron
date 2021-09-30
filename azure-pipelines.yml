@@ -101,6 +101,6 @@ stages:
                 manifests: '$(Pipeline.Workspace)/infrastructure/k8s/article-depl.yaml'
             - task: CmdLine@2
               inputs:
-              script: |
-                cd $(Pipeline.Workspace)
-                ls
+                script: |
+                  cd $(Pipeline.Workspace)
+                  ls
