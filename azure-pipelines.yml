@@ -117,3 +117,5 @@ stages:
                 kubernetesServiceConnection: 'k8s_service_connection'
                 namespace: 'default'
                 manifests: '$(Pipeline.Workspace)/manifests/article-depl.yaml'
+                containers: 'footan/express_article_service:latest'
+                rolloutStatusTimeout: '120'
