@@ -12,6 +12,7 @@ variables:
   tag: '$(Build.BuildId)'
 
 stages:
+
 - stage: Build
   displayName: Build image
   jobs:
@@ -28,7 +29,7 @@ stages:
           }
     - task: PublishPipelineArtifact@1
       inputs:
-        targetPath: '$(Pipeline.Workspace)/s/infrastructure/k8s'
+        targetPath: '$(Pipeline.Workspace)/s/infrastructure/k8s/'
         artifact: 'manifests'
         publishLocation: 'pipeline'
         
@@ -104,10 +105,11 @@ stages:
               inputs:
                 buildType: 'current'
                 artifactName: 'manifests'
-                targetPath: '$(Pipeline.Workspace)/manifests'
+                targetPath: '$(Pipeline.Workspace)/manifests/'
             - task: KubernetesManifest@0
               inputs:
                 action: 'deploy'
                 kubernetesServiceConnection: 'k8s_service_connection'
-                manifests: |
-                  '$(Pipeline.Workspace)/manifests/article-depl.yaml'
+                manifests: '$(Pipeline.Workspace)/manifests/article-depl.yaml'
+            
+            
