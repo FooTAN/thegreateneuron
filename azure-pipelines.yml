@@ -30,3 +30,39 @@ stages:
         buildContext: '$(Build.SourcesDirectory)/src/services/article/'
         tags: |
           $(tag)
+
+- stage: Provision
+  displayName: 'terraforming'
+  dependsOn: Build
+  jobs:
+    - job: Provision
+      displayName: 'Provisioning kubernetes'
+      pool:
+        vmImage: ubuntu-latest
+      variables:
+        - group: terraform_env_vars
+        - group: terraform_state_storage
+        - group: cluster_config
+        - group: rg_config
+      steps:
+      - script: |
+          set -e
+          terraform init -input=false
+          terraform apply -input=false -auto-approve
+        name: 'shellingTerraform'
+        displayName: 'Shelling Terraform'
+        env:
+          ARM_CLIENT_ID: $(TF_ENV_ARM_CLIENT_ID)
+          ARM_CLIENT_SECRET: $(TF_ENV_ARM_CLIENT_SECRET)
+          ARM_TENANT_ID: $(TF_ENV_ARM_TENANT_ID)
+          ARM_SUBSCRIPTION_ID: $(TF_ENV_ARM_SUBSCRIPTION_ID)
+          TF_VAR_build_number: $(tag)
+          TF_VAR_tfstate_container_name: $(tfstate_container_name)
+          TF_VAR_tfstate_resource_group_name: $(tfstate_resource_group_name)
+          TF_VAR_tfstate_storage_account_name: $(tfstate_storage_account_name)
+          TF_VAR_cluster_node_count: $(cluster_node_count)
+          TF_VAR_cluster_vm_size: $(cluster_vm_size)
+          TF_VAR_cluster_name: $(cluster_name)
+          TF_VAR_cluster_dns_prefix: $(cluster_dns_prefix)
+          TF_VAR_rg_name: $(rg_name)
+          TF_VAR_rg_location: $(rg_location)
