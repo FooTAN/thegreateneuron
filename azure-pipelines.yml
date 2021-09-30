@@ -97,7 +97,7 @@ stages:
             - task: CmdLine@2
               inputs:
                 script: |
-                  cd $(Pipeline.Workspace/s)
+                  cd $(Pipeline.Workspace)/s
                   ls
             - task: KubernetesManifest@0
               inputs:
