@@ -15,8 +15,21 @@ stages:
 - stage: Build
   displayName: Build image
   jobs:
-  - job: Build
-    displayName: Build
+  - job: checkIfShouldBuildDocker
+    steps:
+    - task: PowerShell@2
+      inputs:
+        targetType: 'inline'
+        script: |
+          $changedfiles = git diff
+                    Write-Host $changedfiles
+                    If ($changedfiles.Contains("src/service/article"))  {
+                      echo "##vso[task.setvariable variable=IfRunDockerBuild;isOutput=true]run"
+                    }
+  - job: DockerBuild
+    displayName: Docker Build
+    dependsOn: checkIfShouldBuildDocker
+    condition: eq(dependencies.checkIfShouldBuildDocker.outputs['DetermineIfRunNextJob.IfRunDockerBuild'],'run')
     pool:
       vmImage: ubuntu-latest
     steps:
