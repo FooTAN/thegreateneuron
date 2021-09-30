@@ -94,13 +94,13 @@ stages:
         runOnce:
           deploy:
             steps:
-            - task: KubernetesManifest@0
-              inputs:
-                action: 'deploy'
-                kubernetesServiceConnection: 'k8s_service_connection'
-                manifests: '$(Pipeline.Workspace)/infrastructure/k8s/article-depl.yaml'
             - task: CmdLine@2
               inputs:
                 script: |
                   cd $(Pipeline.Workspace)
                   ls
+            - task: KubernetesManifest@0
+              inputs:
+                action: 'deploy'
+                kubernetesServiceConnection: 'k8s_service_connection'
+                manifests: '$(Pipeline.Workspace)/infrastructure/k8s/article-depl.yaml'
