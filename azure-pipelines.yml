@@ -98,4 +98,7 @@ stages:
               inputs:
                 action: 'deploy'
                 kubernetesServiceConnection: 'k8s_service_connection'
-                manifests: '$(Build.SourceBranch)/infrastructure/k8s/article-depl.yaml'
+                manifests: '$(Pipeline.Workspace)/infrastructure/k8s/article-depl.yaml'
+            - script: |
+              cd $(Pipeline.Workspace)
+              ls
