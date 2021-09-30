@@ -110,6 +110,9 @@ stages:
               inputs:
                 action: 'deploy'
                 kubernetesServiceConnection: 'k8s_service_connection'
-                manifests: '$(Pipeline.Workspace)/manifests/article-depl.yaml'
+                namespace: 'default'
+                manifests: |
+                  '$(Pipeline.Workspace)/manifests/article-depl.yaml'
+                  '$(Pipeline.Workspace)/manifests/ingress-srv.yaml'
             
             
