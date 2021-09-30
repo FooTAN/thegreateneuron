@@ -18,6 +18,7 @@ stages:
   - job: checkIfShouldBuildDocker
     steps:
     - task: PowerShell@2
+      displayName: ensure article changed to variable
       inputs:
         targetType: 'inline'
         script: |
