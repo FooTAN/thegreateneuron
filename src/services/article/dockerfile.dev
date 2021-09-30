@@ -4,8 +4,14 @@ WORKDIR /usr/src/app
 
 COPY package*.json ./
 
-RUN npm install --only=prod
+RUN npm install
 
 COPY . .
+
+ARG port_number
+
+EXPOSE $port_number
+
+ENV RUNTIME_ENVIRONMENT=development
 
 CMD [ "npm", "start" ]
