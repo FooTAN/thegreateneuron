@@ -49,7 +49,7 @@ stages:
   dependsOn: Build
   jobs:
     - job: Provision
-      displayName: 'Provisioning kubernetes'
+      displayName: 'Provisioning Azure'
       pool:
         vmImage: ubuntu-latest
       variables:
