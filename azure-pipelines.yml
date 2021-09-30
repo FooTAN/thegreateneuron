@@ -30,7 +30,7 @@ stages:
   - job: DockerBuild
     displayName: Docker Build
     dependsOn: checkIfShouldBuildDocker
-    condition: eq(dependencies.checkIfShouldBuildDocker.outputs['DetermineIfRunNextJob.IfRunDockerBuild'],'run')
+    #condition: eq(dependencies.checkIfShouldBuildDocker.outputs['DetermineIfRunNextJob.IfRunDockerBuild'],'run')
     pool:
       vmImage: ubuntu-latest
     steps:
@@ -117,4 +117,3 @@ stages:
                 kubernetesServiceConnection: 'k8s_service_connection'
                 namespace: 'default'
                 manifests: '$(Pipeline.Workspace)/manifests/article-depl.yaml'
-                rolloutStatusTimeout: 60

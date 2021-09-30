@@ -9,7 +9,7 @@ metadata:
 
 spec:
   rules:
-     - host: thegreatneuron.com
+     - host: localhost
      - http:
         paths:
           - path: /api/article/?(.*)
