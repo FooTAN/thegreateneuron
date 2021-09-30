@@ -84,12 +84,16 @@ stages:
   displayName: 'Deploy to kubernetes'
   dependsOn: Provision
   jobs:
-    - job: DeployArticleService
+    - deployment: DeployArticleService
       displayName: 'Deploying Article Service'
       pool:
         vmImage: ubuntu-latest
-      steps:
-      - task: kubectlapply@3
-        inputs:
-          k8sService: 'k8s_service_connection'
-          yamlfile: '$(Build.SourcesDirectory)/infrastructure/k8s/article-depl.yaml'
+      strategy:
+       runOnce:
+         deploy:
+           steps:
+           - task: KubernetesManifest@0
+             inputs:
+               action: 'deploy'
+               kubernetesServiceConnection: 'k8s_service_connection'
+               manifests: '$(Build.SourcesDirectory)/infrastructure/k8s/article-depl.yaml'
