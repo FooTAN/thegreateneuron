@@ -88,12 +88,14 @@ stages:
       displayName: 'Deploying Article Service'
       pool:
         vmImage: ubuntu-latest
+      environment:
+        name: 'thegreatneuron-dev'
       strategy:
-       runOnce:
-         deploy:
-           steps:
-           - task: KubernetesManifest@0
-             inputs:
-               action: 'deploy'
-               kubernetesServiceConnection: 'k8s_service_connection'
-               manifests: '$(Build.SourcesDirectory)/infrastructure/k8s/article-depl.yaml'
+        runOnce:
+          deploy:
+            steps:
+            - task: KubernetesManifest@0
+              inputs:
+                action: 'deploy'
+                kubernetesServiceConnection: 'k8s_service_connection'
+                manifests: '$(Build.SourcesDirectory)/infrastructure/k8s/article-depl.yaml'
