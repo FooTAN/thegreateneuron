@@ -61,7 +61,7 @@ stages:
       - script: |
           set -e
           cd '$(Build.SourcesDirectory)/infrastructure/terraform'
-          terraform init -input=false
+          terraform init -input=false -backend-config="resource_group_name=$(tfstate_resource_group_name)" -backend-config="storage_account_name=$(tfstate_storage_account_name)" -backend-config="container_name=$(tfstate_container_name)" -backend-config="key=terraform.tfstate"
           terraform apply -input=false -auto-approve
         name: 'shellingTerraform'
         displayName: 'Shelling Terraform'
