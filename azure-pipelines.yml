@@ -80,3 +80,22 @@ stages:
           TF_VAR_cluster_dns_prefix: $(cluster_dns_prefix)
           TF_VAR_rg_name: $(rg_name)
           TF_VAR_rg_location: $(rg_location)
+- stage: Deploy
+  displayName: 'Deploy to kubernetes'
+  dependsOn: Provision
+  jobs:
+    - deployment: DeployArticleService
+      displayName: 'Deploying Article Service'
+      pool:
+        vmImage: ubuntu-latest
+      environment:
+        name: 'thegreatneuron-dev'
+      strategy:
+        runOnce:
+          deploy:
+            steps:
+            - task: KubernetesManifest@0
+              inputs:
+                action: 'deploy'
+                kubernetesServiceConnection: 'k8s_service_connection'
+                manifests: '$(Build.SourcesDirectory)/infrastructure/k8s/article-depl.yaml'
