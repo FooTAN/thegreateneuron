@@ -29,9 +29,9 @@ stages:
     - task: CmdLine@2
       inputs:
         script: |
-        echo "Test"
-        cd $(Pipeline.Workspace)/s
-        ls
+          echo "Test"
+          cd $(Pipeline.Workspace)/s
+          ls
   - job: DockerBuild
     displayName: Docker Build
     dependsOn: checkIfShouldBuildDocker
