@@ -22,10 +22,10 @@ stages:
         targetType: 'inline'
         script: |
           $changedfiles = git diff
-                    Write-Host $changedfiles
-                    If ($changedfiles -and $changedfiles.Contains("src/service/article"))  {
-                      echo "##vso[task.setvariable variable=IfRunDockerBuild;isOutput=true]run"
-                    }
+          Write-Host $changedfiles
+          If ($changedfiles -and $changedfiles.Contains("src/service/article"))  {
+            echo "##vso[task.setvariable variable=IfRunDockerBuild;isOutput=true]run"
+          }
   - job: DockerBuild
     displayName: Docker Build
     dependsOn: checkIfShouldBuildDocker
