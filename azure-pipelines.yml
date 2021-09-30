@@ -23,10 +23,10 @@ stages:
     - task: Docker@2
       displayName: Build client image
       inputs:
-        containerRegistry: 'footan_dockerhub'
-        repository: 'footan/react_client'
+        containerRegistry: 'tgn_dockerhub'
+        repository: 'footan/express_article_service'
         command: 'buildAndPush'
-        Dockerfile: '$(Build.SourcesDirectory)/src/services/client/dockerfile.dev'
-        buildContext: '$(Build.SourcesDirectory)/src/services/client/'
+        Dockerfile: '$(Build.SourcesDirectory)/src/services/article/dockerfile'
+        buildContext: '$(Build.SourcesDirectory)/src/services/article/'
         tags: |
           $(tag)
