@@ -39,5 +39,25 @@ resource "azurerm_kubernetes_cluster" "cluster" {
     http_application_routing {
       enabled = true
     }
+
+    aci_connector_linux {
+      enabled = false
+    }
+
+    azure_policy {
+      enabled = false
+    }
+
+    ingress_application_gateway {
+      enabled = false
+    }
+
+    kube_dashboard {
+      enabled = false
+    }
+
+    oms_agent {
+      enabled = false
+    }
   }
 }
