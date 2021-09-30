@@ -47,7 +47,7 @@ stages:
       steps:
       - script: |
           set -e
-          cd ../../../infrastructure/terraform
+          cd '$(Build.SourcesDirectory)/infrastructure/terraform'
           terraform init -input=false
           terraform apply -input=false -auto-approve
         name: 'shellingTerraform'
