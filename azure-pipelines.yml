@@ -1,7 +1,3 @@
-# Docker
-# Build a Docker image
-# https://docs.microsoft.com/azure/devops/pipelines/languages/docker
-
 trigger:
 - main
 
@@ -10,27 +6,27 @@ resources:
 
 variables:
   tag: '$(Build.BuildId)'
+  articleServiceName: 'express_article_service'
 
 stages:
 - stage: Build
   displayName: Build image
   jobs:
-  - job: checkIfShouldBuildDocker
-    steps:
-    - task: PowerShell@2
-      displayName: ensure article changed to variable
-      inputs:
-        targetType: 'inline'
-        script: |
-          $changedfiles = git diff
-          Write-Host $changedfiles
-          If ($changedfiles -and $changedfiles.Contains("src/service/article"))  {
-            echo "##vso[task.setvariable variable=IfRunDockerBuild;isOutput=true]run"
-          }
+#  - job: checkIfShouldBuildDocker
+#    steps:#
+#    - task: PowerShell@2
+#      displayName: ensure article changed to variable
+#        targetType: 'inline'
+#        script: |
+#          $changedfiles = git diff
+#          Write-Host $changedfiles
+#          If ($changedfiles -and $changedfiles.Contains("src/service/article"))  {
+#            echo "##vso[task.setvariable variable=IfRunDockerBuild;isOutput=true]run"
+#          }
   - job: DockerBuild
     displayName: Docker Build
     dependsOn: checkIfShouldBuildDocker
-    condition: eq(dependencies.checkIfShouldBuildDocker.outputs['DetermineIfRunNextJob.IfRunDockerBuild'],'run')
+#    condition: eq(dependencies.checkIfShouldBuildDocker.outputs['DetermineIfRunNextJob.IfRunDockerBuild'],'run')
     pool:
       vmImage: ubuntu-latest
     steps:
@@ -38,12 +34,13 @@ stages:
       displayName: Build client image
       inputs:
         containerRegistry: 'tgn_dockerhub'
-        repository: 'footan/express_article_service'
+        repository: '$(articleServiceName)'
         command: 'buildAndPush'
         Dockerfile: '$(Build.SourcesDirectory)/src/services/article/dockerfile'
         buildContext: '$(Build.SourcesDirectory)/src/services/article/'
         tags: |
           $(tag)
+          latest
 
 - stage: Provision
   displayName: 'terraforming'
@@ -81,41 +78,30 @@ stages:
           TF_VAR_cluster_dns_prefix: $(cluster_dns_prefix)
           TF_VAR_rg_name: $(rg_name)
           TF_VAR_rg_location: $(rg_location)
-      - task: PublishPipelineArtifact@1
+      - task: PublishBuildArtifacts@1
         inputs:
-          targetPath: '$(Pipeline.Workspace)/s/infrastructure/k8s/'
-          artifact: 'manifests'
-          publishLocation: 'pipeline'
+          PathtoPublish: '$(Pipeline.Workspace)/s/infrastructure/k8s/'
+          ArtifactName: 'manifests'
+          publishLocation: 'Container'
 - stage: Deploy
   displayName: 'Deploy to kubernetes'
   dependsOn: Provision
   jobs:
-    - deployment: DeployArticleService
-      displayName: 'Deploying Article Service'
-      pool:
-        vmImage: ubuntu-latest
-      environment:
-        name: 'thegreatneuron-dev'
-      strategy:
-        runOnce:
-          deploy:
-            steps:
-            - task: DownloadPipelineArtifact@2
-              inputs:
-                buildType: 'current'
-                artifactName: 'manifests'
-                targetPath: '$(Pipeline.Workspace)/manifests/'
-            - task: KubernetesManifest@0
-              inputs:
-                action: 'deploy'
-                kubernetesServiceConnection: 'k8s_service_connection'
-                namespace: 'default'
-                manifests: '$(Pipeline.Workspace)/manifests/ingress-srv.yaml'
-            - task: KubernetesManifest@0
-              inputs:
-                action: 'deploy'
-                kubernetesServiceConnection: 'k8s_service_connection'
-                namespace: 'default'
-                manifests: '$(Pipeline.Workspace)/manifests/article-depl.yaml'
-                containers: 'footan/express_article_service:latest'
-                rolloutStatusTimeout: '120'
+  - job: Deploy
+    displayName: Deploy to cluster
+    pool:
+      vmImage: ubuntu-latest
+    steps:
+    - task: DownloadPipelineArtifact@2
+      inputs:
+        buildType: 'current'
+        artifactName: 'manifests'
+        targetPath: '$(Pipeline.Workspace)/manifests'
+    - task: KubernetesManifest@0
+      inputs:
+        action: 'deploy'
+        kubernetesServiceConnection: 'k8s_service_connection'
+        namespace: 'default'
+        manifests: |
+          $(Pipeline.Workspace)/manifests/ingress-srv.yaml
+          $(Pipeline.Workspace)/manifests/article-depl.yaml
