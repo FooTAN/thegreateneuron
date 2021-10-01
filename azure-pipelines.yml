@@ -7,7 +7,7 @@ resources:
 variables:
   tag: '$(Build.BuildId)'
   articleServiceName: 'express_article_service'
-  shouldRunArticleServiceDockerBuild: false;
+  shouldRunArticleServiceDockerBuild: 'false';
 
 stages:
 - stage: Ensure
@@ -91,6 +91,7 @@ stages:
           PathtoPublish: '$(Pipeline.Workspace)/s/infrastructure/k8s/'
           ArtifactName: 'manifests'
           publishLocation: 'Container'
+
 - stage: Deploy
   displayName: 'Deploy to kubernetes'
   dependsOn: Provision
