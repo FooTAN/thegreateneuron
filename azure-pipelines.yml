@@ -7,7 +7,7 @@ resources:
 variables:
   tag: '$(Build.BuildId)'
   articleServiceName: 'express_article_service'
-  shouldRunArticleServiceDockerBuild: 'false';
+  shouldRunArticleServiceDockerBuild: 'false'
 
 stages:
 - stage: Ensure
