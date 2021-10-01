@@ -89,21 +89,24 @@ stages:
   displayName: 'Deploy to kubernetes'
   dependsOn: Provision
   jobs:
-  - job: Deploy
+  - deployment: Deploy
     displayName: Deploy to cluster
+    environment: 'thegreatneuron-dev.default'
     pool:
       vmImage: ubuntu-latest
-    steps:
-    - task: DownloadPipelineArtifact@2
-      inputs:
-        buildType: 'current'
-        artifactName: 'manifests'
-        targetPath: '$(Pipeline.Workspace)/manifests'
-    - task: KubernetesManifest@0
-      inputs:
-        action: 'deploy'
-        kubernetesServiceConnection: 'k8s_service_connection'
-        namespace: 'default'
-        manifests: |
-          $(Pipeline.Workspace)/manifests/ingress-srv.yaml
-          $(Pipeline.Workspace)/manifests/article-depl.yaml
+    strategy:
+     runOnce:
+       deploy:
+         steps:     
+         - task: DownloadPipelineArtifact@2
+           inputs:
+             buildType: 'current'
+             artifactName: 'manifests'
+             targetPath: '$(Pipeline.Workspace)/manifests'     
+         - task: KubernetesManifest@0
+           inputs:
+             action: 'deploy'
+             namespace: 'default'
+             manifests: |
+               $(Pipeline.Workspace)/manifests/ingress-srv.yaml
+               $(Pipeline.Workspace)/manifests/article-depl.yaml
