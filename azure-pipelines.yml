@@ -27,6 +27,8 @@ stages:
     displayName: Docker Build
 #    dependsOn: checkIfShouldBuildDocker
 #    condition: eq(dependencies.checkIfShouldBuildDocker.outputs['DetermineIfRunNextJob.IfRunDockerBuild'],'run')
+    variables:
+      - group: dockerhub
     pool:
       vmImage: ubuntu-latest
     steps:
@@ -34,7 +36,7 @@ stages:
       displayName: Build client image
       inputs:
         containerRegistry: 'tgn_dockerhub'
-        repository: '$(articleServiceName)'
+        repository: '$(repoRef)/$(articleServiceName)'
         command: 'buildAndPush'
         Dockerfile: '$(Build.SourcesDirectory)/src/services/article/dockerfile'
         buildContext: '$(Build.SourcesDirectory)/src/services/article/'
