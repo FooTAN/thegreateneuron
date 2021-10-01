@@ -37,3 +37,4 @@ kubeconfig
 
 # not strictly necessary in our scenario
 .terraform.lock.hcl
+local.tfvars

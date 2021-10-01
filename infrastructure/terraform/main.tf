@@ -29,6 +29,7 @@ resource "azurerm_kubernetes_cluster" "cluster" {
     name       = "default"
     node_count = var.cluster_node_count
     vm_size    = var.cluster_vm_size
+    os_type = "Linux"
   }
 
   identity {
@@ -39,7 +40,7 @@ resource "azurerm_kubernetes_cluster" "cluster" {
     http_application_routing {
       enabled = true
     }
-
+# let us disable som addons, otherwise we'll automatically get unecessary provisioning
     aci_connector_linux {
       enabled = false
     }
