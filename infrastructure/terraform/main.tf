@@ -29,7 +29,6 @@ resource "azurerm_kubernetes_cluster" "cluster" {
     name       = "default"
     node_count = var.cluster_node_count
     vm_size    = var.cluster_vm_size
-    os_type = "Linux"
   }
 
   identity {
