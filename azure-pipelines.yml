@@ -12,7 +12,6 @@ variables:
 stages:
 - stage: Provision
   displayName: 'terraforming'
-  dependsOn: Build
   jobs:
     - job: Provision
       displayName: 'Provisioning Azure'
@@ -54,6 +53,7 @@ stages:
           
 - stage: Ensure
   displayName: Ensure Changes in source
+  dependsOn: Provision
   jobs: 
   - job: checkIfShouldBuildDocker
     steps:
@@ -94,7 +94,7 @@ stages:
 
 - stage: Deploy
   displayName: 'Deploy to kubernetes'
-  dependsOn: Provision
+  dependsOn: Build
   jobs:
   - deployment: Deploy
     displayName: Deploy to cluster
