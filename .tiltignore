@@ -1,0 +1,4 @@
+
+infrastructure/k8s/helm/**/charts
+infrastructure/k8s/helm/**/tmpcharts
+infrastructure/terraform

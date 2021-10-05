@@ -4,6 +4,7 @@ terraform {
       source  = "hashicorp/azurerm"
       version = "=2.78.0"
     }
+    
   }
 
   backend "azurerm" {
@@ -13,6 +14,18 @@ terraform {
 provider "azurerm" {
   features {}
 }
+
+provider "helm" {
+  kubernetes {
+    host = azurerm_kubernetes_cluster.cluster.kube_config[0].host
+
+    client_key             = base64decode(azurerm_kubernetes_cluster.cluster.kube_config[0].client_key)
+    client_certificate     = base64decode(azurerm_kubernetes_cluster.cluster.kube_config[0].client_certificate)
+    cluster_ca_certificate = base64decode(azurerm_kubernetes_cluster.cluster.kube_config[0].cluster_ca_certificate)
+    load_config_file       = false
+  }
+}
+
 
 resource "azurerm_resource_group" "rg" {
   name     = var.rg_name
@@ -34,30 +47,18 @@ resource "azurerm_kubernetes_cluster" "cluster" {
   identity {
     type = "SystemAssigned"
   }
+}
 
-  addon_profile {
-    http_application_routing {
-      enabled = true
-    }
-# let us disable som addons, otherwise we'll automatically get unecessary provisioning
-    aci_connector_linux {
-      enabled = false
-    }
+resource "helm_release" "ingress" {
+    name      = "ingress"
+    chart     = "stable/nginx-ingress"
 
-    azure_policy {
-      enabled = false
+    set {
+        name  = "rbac.create"
+        value = "true"
     }
+}
 
-    ingress_application_gateway {
-      enabled = false
-    }
-
-    kube_dashboard {
-      enabled = false
-    }
-
-    oms_agent {
-      enabled = false
-    }
-  }
+output "kube_config" {
+  value = azurerm_kubernetes_cluster.cluster.kube_config_raw
 }

@@ -8,10 +8,10 @@ RUN npm install
 
 COPY . .
 
-ARG port_number
-
-EXPOSE $port_number
 
 ENV RUNTIME_ENVIRONMENT=development
+ENV PORT=8003
+EXPOSE 8003
 
+Run npm install -g ts-node
 CMD [ "npm", "start" ]

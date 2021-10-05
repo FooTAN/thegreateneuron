@@ -1,0 +1,8 @@
+image:
+  repository: thegreatneuron-article
+  pullPolicy: Never
+  # Overrides the image tag whose default is the chart appVersion.
+  tag: ""
+
+service:
+  targetPort: 8003
