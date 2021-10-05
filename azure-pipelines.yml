@@ -6,7 +6,8 @@ resources:
 
 variables:
   tag: '$(Build.BuildId)'
-  articleServiceName: 'express_article_service'
+  articleServiceName: 'express_tgn_article'
+  clientServiceName: 'react_tgn_client'
   shouldBuildArticle: 'false'
   shouldBuildClient: 'false'
 
@@ -116,28 +117,28 @@ stages:
           $(tag)
           latest
 
-- stage: Deploy
-  displayName: 'Deploy to kubernetes'
-  dependsOn: Build
-  jobs:
-  - deployment: Deploy
-    displayName: Deploy to cluster
-    environment: 'thegreatneuron-dev.default'
-    pool:
-      vmImage: ubuntu-latest
-    strategy:
-     runOnce:
-       deploy:
-         steps:     
-         - task: DownloadPipelineArtifact@2
-           inputs:
-             buildType: 'current'
-             artifactName: 'manifests'
-             targetPath: '$(Pipeline.Workspace)/manifests'     
-         - task: KubernetesManifest@0
-           inputs:
-             action: 'deploy'
-             namespace: 'default'
-             manifests: |
-               $(Pipeline.Workspace)/manifests/ingress-srv.yaml
-               $(Pipeline.Workspace)/manifests/article-depl.yaml
+#- stage: Deploy
+#  displayName: 'Deploy to kubernetes'
+#  dependsOn: Build
+#  jobs:
+#  - deployment: Deploy
+#    displayName: Deploy to cluster
+#    environment: 'thegreatneuron-dev.default'
+#    pool:
+#      vmImage: ubuntu-latest
+#    strategy:
+#     runOnce:
+#       deploy:
+#         steps:     
+#         - task: DownloadPipelineArtifact@2
+#           inputs:
+#             buildType: 'current'
+#             artifactName: 'manifests'
+#             targetPath: '$(Pipeline.Workspace)/manifests'     
+#         - task: KubernetesManifest@0
+#           inputs:
+#             action: 'deploy'
+#             namespace: 'default'
+#             manifests: |
+#               $(Pipeline.Workspace)/manifests/ingress-srv.yaml
+#               $(Pipeline.Workspace)/manifests/article-depl.yaml
