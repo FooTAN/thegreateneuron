@@ -142,8 +142,8 @@ stages:
              installKubectl: true
          - task: helm@1
            inputs:
-             subCommand: 'dependency update'
-             arguments: '$(Pipeline.Workspace)/manifests/helm/client/'
+             subCommand: 'dependency'
+             arguments: 'update $(Pipeline.Workspace)/manifests/helm/client/'
          - task: HelmDeploy@0
            inputs:
              connectionType: 'Kubernetes Service Connection'
@@ -157,8 +157,8 @@ stages:
              chartPath: '$(Pipeline.Workspace)/manifests/helm/client/'
          - task: helm@1
            inputs:
-             subCommand: 'dependency update'
-             arguments: '$(Pipeline.Workspace)/manifests/helm/article/'
+             subCommand: 'dependency'
+             arguments: 'update $(Pipeline.Workspace)/manifests/helm/article/'
          - task: HelmDeploy@0
            inputs:
              connectionType: 'Kubernetes Service Connection'
@@ -172,8 +172,8 @@ stages:
              chartPath: '$(Pipeline.Workspace)/manifests/helm/article/'
          - task: helm@1
            inputs:
-             subCommand: 'dependency update'
-             arguments: '$(Pipeline.Workspace)/manifests/helm/ingress/'
+             subCommand: 'dependency'
+             arguments: 'update $(Pipeline.Workspace)/manifests/helm/ingress/'
          - task: HelmDeploy@0
            inputs:
              connectionType: 'Kubernetes Service Connection'
