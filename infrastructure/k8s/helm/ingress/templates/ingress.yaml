@@ -9,8 +9,8 @@ metadata:
 spec:
   rules:
     {{- range .Values.ingress.hosts }}
-    - host: {{ .host | quote }}
-      http:
+    #- host: {{ .host | quote }}
+    - http:
         paths:
           {{- range .paths }}
           - path: {{ .path }}
