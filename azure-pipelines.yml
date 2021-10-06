@@ -135,7 +135,15 @@ stages:
            inputs:
              buildType: 'current'
              artifactName: 'manifests'
-             targetPath: '$(Pipeline.Workspace)/manifests'     
+             targetPath: '$(Pipeline.Workspace)/manifests'
+         - task: HelmInstaller@0
+           inputs:
+             helmVersion: '3.6.3'
+             installKubectl: true
+         - task: helm@1
+           inputs:
+             subCommand: 'dependency update'
+             arguments: '$(Pipeline.Workspace)/manifests/helm/client/'
          - task: HelmDeploy@0
            inputs:
              connectionType: 'Kubernetes Service Connection'
@@ -143,11 +151,14 @@ stages:
              command: upgrade
              install: true
              waitForExecution: false
-             updateDependency: true
              releaseName: client
              namespace: 'default'
              chartType: 'FilePath'
              chartPath: '$(Pipeline.Workspace)/manifests/helm/client/'
+         - task: helm@1
+           inputs:
+             subCommand: 'dependency update'
+             arguments: '$(Pipeline.Workspace)/manifests/helm/article/'
          - task: HelmDeploy@0
            inputs:
              connectionType: 'Kubernetes Service Connection'
@@ -155,11 +166,14 @@ stages:
              command: upgrade
              install: true
              waitForExecution: false
-             updateDependency: true
              releaseName: article
              namespace: 'default'
              chartType: 'FilePath'
              chartPath: '$(Pipeline.Workspace)/manifests/helm/article/'
+         - task: helm@1
+           inputs:
+             subCommand: 'dependency update'
+             arguments: '$(Pipeline.Workspace)/manifests/helm/ingress/'
          - task: HelmDeploy@0
            inputs:
              connectionType: 'Kubernetes Service Connection'
@@ -167,7 +181,6 @@ stages:
              command: upgrade
              install: true
              waitForExecution: false
-             updateDependency: true
              releaseName: ingress
              namespace: 'default'
              chartType: 'FilePath'
