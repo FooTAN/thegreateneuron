@@ -143,6 +143,7 @@ stages:
              command: upgrade
              install: true
              waitForExecution: true
+             updateDependency: true
              releaseName: client
              namespace: 'default'
              chartType: 'FilePath'
@@ -154,6 +155,7 @@ stages:
              command: upgrade
              install: true
              waitForExecution: true
+             updateDependency: true
              releaseName: article
              namespace: 'default'
              chartType: 'FilePath'
@@ -165,6 +167,7 @@ stages:
              command: upgrade
              install: true
              waitForExecution: true
+             updateDependency: true
              releaseName: ingress
              namespace: 'default'
              chartType: 'FilePath'
