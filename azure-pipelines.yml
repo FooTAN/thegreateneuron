@@ -116,6 +116,7 @@ stages:
         tags: |
           $(tag)
           latest
+    continueOnError: true;
 
 - stage: Deploy
   displayName: 'Deploy to kubernetes'
