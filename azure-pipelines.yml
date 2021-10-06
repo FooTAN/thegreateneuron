@@ -88,6 +88,7 @@ stages:
     steps:
     - task: Docker@2
       displayName: Build article image
+      continueOnError: true
       inputs:
         containerRegistry: 'tgn_dockerhub'
         repository: '$(repoRef)/$(articleServiceName)'
@@ -97,6 +98,7 @@ stages:
         tags: |
           $(tag)
           latest
+        
   - job: ClientDockerBuild
     displayName: Client Docker Build
     condition: eq(variables.shouldBuildClient ,'true')
@@ -107,6 +109,7 @@ stages:
     steps:
     - task: Docker@2
       displayName: Build client image
+      continueOnError: true
       inputs:
         containerRegistry: 'tgn_dockerhub'
         repository: '$(repoRef)/$(clientServiceName)'
@@ -116,7 +119,6 @@ stages:
         tags: |
           $(tag)
           latest
-    continueOnError: true;
 
 - stage: Deploy
   displayName: 'Deploy to kubernetes'
