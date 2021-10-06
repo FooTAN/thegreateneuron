@@ -142,7 +142,7 @@ stages:
              kubernetesServiceConnection: 'k8s_service_connection'
              command: upgrade
              install: true
-             waitForExecution: true
+             waitForExecution: false
              updateDependency: true
              releaseName: client
              namespace: 'default'
@@ -154,7 +154,7 @@ stages:
              kubernetesServiceConnection: 'k8s_service_connection'
              command: upgrade
              install: true
-             waitForExecution: true
+             waitForExecution: false
              updateDependency: true
              releaseName: article
              namespace: 'default'
@@ -166,7 +166,7 @@ stages:
              kubernetesServiceConnection: 'k8s_service_connection'
              command: upgrade
              install: true
-             waitForExecution: true
+             waitForExecution: false
              updateDependency: true
              releaseName: ingress
              namespace: 'default'
