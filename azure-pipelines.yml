@@ -75,7 +75,7 @@ stages:
         errorActionPreference: 'continue'
           
 - stage: Build
-  displayName: Build image
+  displayName: Build images
   dependsOn: Ensure
   jobs:
   - job: ArticleDockerBuild
