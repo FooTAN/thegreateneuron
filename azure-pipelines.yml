@@ -119,7 +119,7 @@ stages:
 
 - stage: Deploy
   displayName: 'Deploy to kubernetes'
-  dependsOn: Provision
+  dependsOn: Build
   jobs:
   - deployment: Deploy
     displayName: Deploy to cluster
