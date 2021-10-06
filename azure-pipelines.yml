@@ -49,7 +49,7 @@ stages:
           TF_VAR_rg_location: $(rg_location)
       - task: PublishBuildArtifacts@1
         inputs:
-          PathtoPublish: '$(Pipeline.Workspace)/s/infrastructure/k8s/helm'
+          PathtoPublish: '$(Pipeline.Workspace)/s/infrastructure/k8s/'
           ArtifactName: 'manifests'
           publishLocation: 'Container'
           
