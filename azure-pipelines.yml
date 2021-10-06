@@ -49,7 +49,7 @@ stages:
           TF_VAR_rg_location: $(rg_location)
       - task: PublishBuildArtifacts@1
         inputs:
-          PathtoPublish: '$(Pipeline.Workspace)/s/infrastructure/k8s/'
+          PathtoPublish: '$(Pipeline.Workspace)/s/infrastructure/k8s/helm'
           ArtifactName: 'manifests'
           publishLocation: 'Container'
           
@@ -78,8 +78,8 @@ stages:
   displayName: Build image
   dependsOn: Ensure
   jobs:
-  - job: DockerBuild
-    displayName: Docker Build
+  - job: ArticleDockerBuild
+    displayName: Article Docker Build
     condition: eq(variables.shouldBuildArticle ,'true')
     variables:
       - group: dockerhub
@@ -97,7 +97,7 @@ stages:
         tags: |
           $(tag)
           latest
-  - job: ClientBuild
+  - job: ClientDockerBuild
     displayName: Client Docker Build
     condition: eq(variables.shouldBuildClient ,'true')
     variables:
@@ -117,28 +117,35 @@ stages:
           $(tag)
           latest
 
-#- stage: Deploy
-#  displayName: 'Deploy to kubernetes'
-#  dependsOn: Build
-#  jobs:
-#  - deployment: Deploy
-#    displayName: Deploy to cluster
-#    environment: 'thegreatneuron-dev.default'
-#    pool:
-#      vmImage: ubuntu-latest
-#    strategy:
-#     runOnce:
-#       deploy:
-#         steps:     
-#         - task: DownloadPipelineArtifact@2
-#           inputs:
-#             buildType: 'current'
-#             artifactName: 'manifests'
-#             targetPath: '$(Pipeline.Workspace)/manifests'     
-#         - task: KubernetesManifest@0
-#           inputs:
-#             action: 'deploy'
-#             namespace: 'default'
-#             manifests: |
-#               $(Pipeline.Workspace)/manifests/ingress-srv.yaml
-#               $(Pipeline.Workspace)/manifests/article-depl.yaml
+- stage: Deploy
+  displayName: 'Deploy to kubernetes'
+  dependsOn: Provision
+  jobs:
+  - deployment: Deploy
+    displayName: Deploy to cluster
+    environment: 'thegreatneuron-dev.default'
+    pool:
+      vmImage: ubuntu-latest
+    strategy:
+     runOnce:
+       deploy:
+         steps:     
+         - task: DownloadPipelineArtifact@2
+           inputs:
+             buildType: 'current'
+             artifactName: 'manifests'
+             targetPath: '$(Pipeline.Workspace)/manifests'     
+         - task: HelmDeploy@0
+           inputs:
+             connectionType: 'Kubernetes Service Connection'
+             kubernetesServiceConnection: 'k8s_service_connection'
+             namespace: 'default'
+             chartType: 'FilePath'
+             chartPath: '$(Pipeline.Workspace)/manifests/helm/client/'
+         - task: HelmDeploy@0
+           inputs:
+             connectionType: 'Kubernetes Service Connection'
+             kubernetesServiceConnection: 'k8s_service_connection'
+             namespace: 'default'
+             chartType: 'FilePath'
+             chartPath: '$(Pipeline.Workspace)/manifests/helm/article/'

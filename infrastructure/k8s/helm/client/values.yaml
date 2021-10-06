@@ -5,7 +5,7 @@
 replicaCount: 1
 
 image:
-  repository: footan/client
+  repository: footan/react_tgn_client
   pullPolicy: IfNotPresent
   # Overrides the image tag whose default is the chart appVersion.
   tag: ""
