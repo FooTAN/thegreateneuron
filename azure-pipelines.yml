@@ -80,7 +80,7 @@ stages:
   jobs:
   - job: ArticleDockerBuild
     displayName: Article Docker Build
-    #condition: eq(variables.shouldBuildArticle ,'true')
+    condition: eq(variables.shouldBuildArticle ,'true')
     variables:
       - group: dockerhub
     pool:
@@ -88,7 +88,6 @@ stages:
     steps:
     - task: Docker@2
       displayName: Build article image
-      continueOnError: true
       inputs:
         containerRegistry: 'tgn_dockerhub'
         repository: '$(repoRef)/$(articleServiceName)'
@@ -101,7 +100,7 @@ stages:
         
   - job: ClientDockerBuild
     displayName: Client Docker Build
-    #condition: eq(variables.shouldBuildClient ,'true')
+    condition: eq(variables.shouldBuildClient ,'true')
     variables:
       - group: dockerhub
     pool:
@@ -109,7 +108,6 @@ stages:
     steps:
     - task: Docker@2
       displayName: Build client image
-      continueOnError: true
       inputs:
         containerRegistry: 'tgn_dockerhub'
         repository: '$(repoRef)/$(clientServiceName)'
@@ -127,9 +125,6 @@ stages:
   - deployment: Deploy
     displayName: Deploy to cluster
     environment: 'thegreatneuron-dev.default'
-    variables:
-      - group: cluster_config
-      - group: rg_config
     pool:
       vmImage: ubuntu-latest
     strategy:
@@ -143,10 +138,8 @@ stages:
              targetPath: '$(Pipeline.Workspace)/manifests'     
          - task: HelmDeploy@0
            inputs:
-             connectionType: 'Azure Resource Manager'
-             azureSubscription: 'tgn_azure_resource_manager'
-             azureResourceGroup: '$(rg_name)'
-             kubernetesCluster: '$(cluster_name)'
+             connectionType: 'Kubernetes Service Connection'
+             kubernetesServiceConnection: 'k8s_service_connection'
              command: upgrade
              install: true
              waitForExecution: true
@@ -156,10 +149,8 @@ stages:
              chartPath: '$(Pipeline.Workspace)/manifests/helm/client/'
          - task: HelmDeploy@0
            inputs:
-             connectionType: 'Azure Resource Manager'
-             azureSubscription: 'tgn_azure_resource_manager'
-             azureResourceGroup: '$(rg_name)'
-             kubernetesCluster: '$(cluster_name)'
+             connectionType: 'Kubernetes Service Connection'
+             kubernetesServiceConnection: 'k8s_service_connection'
              command: upgrade
              install: true
              waitForExecution: true
@@ -169,10 +160,8 @@ stages:
              chartPath: '$(Pipeline.Workspace)/manifests/helm/article/'
          - task: HelmDeploy@0
            inputs:
-             connectionType: 'Azure Resource Manager'
-             azureSubscription: 'tgn_azure_resource_manager'
-             azureResourceGroup: '$(rg_name)'
-             kubernetesCluster: '$(cluster_name)'
+             connectionType: 'Kubernetes Service Connection'
+             kubernetesServiceConnection: 'k8s_service_connection'
              command: upgrade
              install: true
              waitForExecution: true
