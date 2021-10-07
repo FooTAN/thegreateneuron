@@ -27,3 +27,4 @@ ingress:
           pathType: Prefix
           port: 8000
           name: client
+  tls: []
