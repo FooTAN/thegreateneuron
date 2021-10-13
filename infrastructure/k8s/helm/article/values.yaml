@@ -2,7 +2,7 @@ replicaCount: 1
 pathBase: /api/article
 
 image:
-  repository: footan/express_tgn_article
+  repository: footan/aspnetcore_tgn_article
   pullPolicy: Always
   tag: "latest"
 
