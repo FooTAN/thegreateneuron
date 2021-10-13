@@ -6,7 +6,6 @@ ingress:
      cert-manager.io/cluster-issuer: letsencrypt
   }
   hosts:
-    - host: localhost
       paths:
         - path: /api/article/?(.*)
           pathType: Prefix
