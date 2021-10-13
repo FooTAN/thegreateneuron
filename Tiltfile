@@ -28,7 +28,7 @@ def helmSetup(name, hasDefaultValues = True):
 
 #for name, path in services.items():
 #  dockerSetup(name, path)
-docker_build('thegreatneuron-article', context='./src/services/aspnetcore/', dockerfile='./src/services/aspnetcore/article/dockerfile.dev')
+docker_build('thegreatneuron-article', context='./src/services/aspnetcore/', dockerfile='./src/services/aspnetcore/article/dockerfile')
 docker_build('thegreatneuron-client', context='./src/uis/react/client/', dockerfile='./src/uis/react/client/dockerfile.dev')
 
 
