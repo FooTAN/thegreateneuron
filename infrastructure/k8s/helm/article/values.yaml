@@ -3,7 +3,7 @@ pathBase: /api/article
 
 image:
   repository: footan/express_tgn_article
-  pullPolicy: IfNotPresent
+  pullPolicy: Always
   tag: "latest"
 
 
