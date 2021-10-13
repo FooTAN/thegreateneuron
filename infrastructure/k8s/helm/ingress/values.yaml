@@ -6,7 +6,7 @@ ingress:
      cert-manager.io/cluster-issuer: letsencrypt
   }
   hosts:
-      paths:
+    - paths:
         - path: /api/article/?(.*)
           pathType: Prefix
           port: 8003
