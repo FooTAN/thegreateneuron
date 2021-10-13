@@ -5,4 +5,4 @@ image:
   tag: ""
 
 service:
-  targetPort: 8003
+  targetPort: 5000

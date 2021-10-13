@@ -3,6 +3,7 @@
 # Declare variables to be passed into your templates.
 
 replicaCount: 1
+pathBase: /
 
 image:
   repository: footan/react_tgn_client

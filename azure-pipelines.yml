@@ -6,10 +6,10 @@ resources:
 
 variables:
   tag: '$(Build.BuildId)'
-  articleServiceName: 'express_tgn_article'
+  articleServiceName: 'aspnetcore_tgn_article'
   clientServiceName: 'react_tgn_client'
-  shouldBuildArticle: 'false'
-  shouldBuildClient: 'false'
+  shouldBuildArticle: 'true'
+  shouldBuildClient: 'true'
 
 stages:
 - stage: Provision
@@ -25,54 +25,57 @@ stages:
         - group: cluster_config
         - group: rg_config
       steps:
-      - script: |
-          set -e
-          cd '$(Build.SourcesDirectory)/infrastructure/terraform'
-          terraform init -input=false -backend-config="resource_group_name=$(tfstate_resource_group_name)" -backend-config="storage_account_name=$(tfstate_storage_account_name)" -backend-config="container_name=$(tfstate_container_name)" -backend-config="key=terraform.tfstate"
-          terraform apply -input=false -auto-approve
+      - script:  |
+         echo "terraforming pipeline script is commented out, because of unecessary storage cost for this project.."
+
+#      - script: |
+#          set -e
+#          cd '$(Build.SourcesDirectory)/infrastructure/terraform'
+#          terraform init -input=false -backend-config="resource_group_name=$(tfstate_resource_group_name)" -backend-config="storage_account_name=$(tfstate_storage_account_name)" -backend-config="container_name=$(tfstate_container_name)" -backend-config="key=terraform.tfstate"
+#          terraform apply -input=false -auto-approve
         name: 'shellingTerraform'
         displayName: 'Shelling Terraform'
-        env:
-          ARM_CLIENT_ID: $(TF_ENV_ARM_CLIENT_ID)
-          ARM_CLIENT_SECRET: $(TF_ENV_ARM_CLIENT_SECRET)
-          ARM_TENANT_ID: $(TF_ENV_ARM_TENANT_ID)
-          ARM_SUBSCRIPTION_ID: $(TF_ENV_ARM_SUBSCRIPTION_ID)
-          TF_VAR_build_number: $(tag)
-          TF_VAR_tfstate_container_name: $(tfstate_container_name)
-          TF_VAR_tfstate_resource_group_name: $(tfstate_resource_group_name)
-          TF_VAR_tfstate_storage_account_name: $(tfstate_storage_account_name)
-          TF_VAR_cluster_node_count: $(cluster_node_count)
-          TF_VAR_cluster_vm_size: $(cluster_vm_size)
-          TF_VAR_cluster_name: $(cluster_name)
-          TF_VAR_cluster_dns_prefix: $(cluster_dns_prefix)
-          TF_VAR_rg_name: $(rg_name)
-          TF_VAR_rg_location: $(rg_location)
+#        env:
+#          ARM_CLIENT_ID: $(TF_ENV_ARM_CLIENT_ID)
+#          ARM_CLIENT_SECRET: $(TF_ENV_ARM_CLIENT_SECRET)
+#          ARM_TENANT_ID: $(TF_ENV_ARM_TENANT_ID)
+#          ARM_SUBSCRIPTION_ID: $(TF_ENV_ARM_SUBSCRIPTION_ID)
+#          TF_VAR_build_number: $(tag)
+#          TF_VAR_tfstate_container_name: $(tfstate_container_name)
+#          TF_VAR_tfstate_resource_group_name: $(tfstate_resource_group_name)
+#          TF_VAR_tfstate_storage_account_name: $(tfstate_storage_account_name)
+#          TF_VAR_cluster_node_count: $(cluster_node_count)
+#          TF_VAR_cluster_vm_size: $(cluster_vm_size)
+#          TF_VAR_cluster_name: $(cluster_name)
+#          TF_VAR_cluster_dns_prefix: $(cluster_dns_prefix)
+#          TF_VAR_rg_name: $(rg_name)
+#          TF_VAR_rg_location: $(rg_location)
       - task: PublishBuildArtifacts@1
         inputs:
           PathtoPublish: '$(Pipeline.Workspace)/s/infrastructure/k8s/'
           ArtifactName: 'manifests'
           publishLocation: 'Container'
           
-- stage: Ensure
-  displayName: Ensure Changes in source
-  dependsOn: Provision
-  jobs: 
-  - job: checkIfShouldBuildDocker
-    steps:
-    - task: PowerShell@2
-      inputs:
-        targetType: 'inline'
-        script: |
-          $changedfiles = git diff
-          Write-Host $changedfiles
-          If ($changedfiles -and $changedfiles.Contains("src/service/article"))  {
-            echo "##vso[task.setvariable variable=shouldBuildArticle]true"
-          }
-          If ($changedfiles -and $changedfiles.Contains("src/service/client"))  {
-            echo "##vso[task.setvariable variable=shouldBuildClient]true"
-          } 
-
-        errorActionPreference: 'continue'
+#- stage: Ensure
+#  displayName: Ensure Changes in source
+#  dependsOn: Provision
+#  jobs: 
+#  - job: checkIfShouldBuildDocker
+#    steps:
+#    - task: PowerShell@2
+#      inputs:
+#        targetType: 'inline'
+#        script: |
+#          $changedfiles = git diff
+#          Write-Host $changedfiles
+#          If ($changedfiles -and $changedfiles.Contains("src/services/aspnetcore/article"))  {
+#            echo "##vso[task.setvariable variable=shouldBuildArticle]true"
+#          }
+#          If ($changedfiles -and $changedfiles.Contains("src/uis/react/client"))  {
+#            echo "##vso[task.setvariable variable=shouldBuildClient]true"
+#          } 
+#
+#        errorActionPreference: 'continue'
           
 - stage: Build
   displayName: Build images
@@ -92,8 +95,8 @@ stages:
         containerRegistry: 'tgn_dockerhub'
         repository: '$(repoRef)/$(articleServiceName)'
         command: 'buildAndPush'
-        Dockerfile: '$(Build.SourcesDirectory)/src/services/article/dockerfile'
-        buildContext: '$(Build.SourcesDirectory)/src/services/article/'
+        Dockerfile: '$(Build.SourcesDirectory)/src/services/aspnetcore/article/dockerfile'
+        buildContext: '$(Build.SourcesDirectory)/src/services/aspnetcore/'
         tags: |
           $(tag)
           latest
@@ -112,8 +115,8 @@ stages:
         containerRegistry: 'tgn_dockerhub'
         repository: '$(repoRef)/$(clientServiceName)'
         command: 'buildAndPush'
-        Dockerfile: '$(Build.SourcesDirectory)/src/services/client/dockerfile'
-        buildContext: '$(Build.SourcesDirectory)/src/services/client/'
+        Dockerfile: '$(Build.SourcesDirectory)/src/uis/react/client/dockerfile'
+        buildContext: '$(Build.SourcesDirectory)/src/uis/react/client'
         tags: |
           $(tag)
           latest

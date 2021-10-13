@@ -1,0 +1,24 @@
+FROM mcr.microsoft.com/dotnet/sdk:5.0 AS build
+WORKDIR /app
+COPY ["auth/src/API/API.csproj", "auth/src/API/"]
+COPY ["auth/src/Application/Application.csproj", "auth/src/Application/"]
+COPY ["auth/src/Infrastructure/Infrastructure.csproj", "auth/src/Infrastructure/"]
+COPY ["auth/src/Domain/Domain.csproj", "auth/src/Domain/"]
+COPY ["common/src/Common.API/Common.API.csproj", "common/src/Common.API/"]
+COPY ["common/src/Common.Application/Common.Application.csproj", "common/src/Common.Application/"]
+COPY ["common/src/Common.Domain/Common.Domain.csproj", "common/src/Common.Domain/"]
+COPY ["common/src/Common.Infrastructure/Common.Infrastructure.csproj", "common/src/Common.Infrastructure/"]
+
+RUN dotnet restore "auth/src/API/API.csproj"
+COPY . .
+WORKDIR /app/auth/src/API/
+RUN dotnet build "API.csproj" -c Release -o /app/build
+
+FROM build AS publish
+RUN dotnet publish "API.csproj" -c Release -o /app/publish
+
+FROM mcr.microsoft.com/dotnet/aspnet:5.0
+EXPOSE 80
+WORKDIR /app
+COPY --from=publish /app/publish .
+ENTRYPOINT ["dotnet", "API.dll"]

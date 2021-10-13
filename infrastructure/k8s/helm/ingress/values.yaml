@@ -8,16 +8,6 @@ ingress:
   hosts:
     - host: localhost
       paths:
-        - path: /admin/?(.*)
-          pathType: Prefix
-          port: 8001
-          name: admin
-
-        - path: /api/auth/?(.*)
-          pathType: Prefix
-          port: 8002
-          name: auth
-
         - path: /api/article/?(.*)
           pathType: Prefix
           port: 8003

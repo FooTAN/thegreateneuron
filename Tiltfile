@@ -2,19 +2,21 @@ load('ext://namespace', 'namespace_create', 'namespace_inject')
 
 namespace_create('thegreatneuron')
 
-services = [
-    'client',
-    'article',
-    'admin'
-]
+serviceAspNetCorePath = './src/services/aspnetcore/'
+uisReactPath = './src/uis/react/'
+helmPath = './infrastructure/k8s/helm/'
 
-def dockerSetup(name):
+services = {
+    'client': uisReactPath+'client/',
+    'article': serviceAspNetCorePath+'article/',
+}
+
+def dockerSetup(name, path):
   composedName='thegreatneuron-'+name
-  path='./src/services/'+name+'/'
-  docker_build(composedName, path, dockerfile=path+'dockerfile.dev')
+  docker_build(composedName, context=serviceAspNetCorePath, dockerfile=path+'dockerfile.dev')
 
 def helmSetup(name, hasDefaultValues = True):
-  path = './infrastructure/k8s/helm/'+name+'/'
+  path = helmPath+name+'/'
   local('helm dependency update '+path)
 
   values=[]
@@ -24,8 +26,11 @@ def helmSetup(name, hasDefaultValues = True):
   k8s_yaml(helm(path, name=name, namespace='thegreatneuron', values=values))
 
 
-for ds in services:
-  dockerSetup(ds)
+#for name, path in services.items():
+#  dockerSetup(name, path)
+docker_build('thegreatneuron-article', context='./src/services/aspnetcore/', dockerfile='./src/services/aspnetcore/article/dockerfile.dev')
+docker_build('thegreatneuron-client', context='./src/uis/react/client/', dockerfile='./src/uis/react/client/dockerfile.dev')
+
 
 helmSetup('ingress', False)
 for ds in services:
@@ -33,5 +38,4 @@ for ds in services:
 
 k8s_resource(objects=['ingress-srv:ingress'], new_name='ingress')
 k8s_resource('client', port_forwards='8000:3000')
-k8s_resource('article', port_forwards='8003:8003')
-k8s_resource('admin', port_forwards='8001:3000')
+k8s_resource('article', port_forwards='8003:5000')
