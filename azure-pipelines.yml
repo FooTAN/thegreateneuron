@@ -8,7 +8,7 @@ variables:
   tag: '$(Build.BuildId)'
   articleServiceName: 'aspnetcore_tgn_article'
   clientServiceName: 'react_tgn_client'
-  shouldBuildArticle: 'false'
+  shouldBuildArticle: 'true'
   shouldBuildClient: 'false'
 
 stages:
