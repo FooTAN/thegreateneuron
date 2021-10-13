@@ -27,7 +27,7 @@ function App() {
           </div>
         </div>
       </section>
-      <h2 className="display-6 text-center mb-4">Latest Dog vs Cat Comparison</h2>
+      <h2 className="display-6 text-center mb-4">Latest Dog vs Cat ComparisonENSURE</h2>
       <ArticleDashboard />
       {/*<UsersView />*/}
     </main>
