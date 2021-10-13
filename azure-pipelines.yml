@@ -79,7 +79,7 @@ stages:
           
 - stage: Build
   displayName: Build images
-  dependsOn: Ensure
+  dependsOn: Provision
   jobs:
   - job: ArticleDockerBuild
     displayName: Article Docker Build
