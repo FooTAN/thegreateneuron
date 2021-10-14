@@ -15,12 +15,12 @@ function Jumbotron() {
                 <div className="row">
                     <div className="col-md-6 col-12">
                         <JumbotronBlock title="What is this site?">
-                            This is a demonstration project. If you want to know more you can have a look at the source code, and read up on the project at <a className="link-light" href="https://github.com/FooTAN/thegreatneuron">Github</a>.
+                            This is a demonstration project. If you want to have a look at the source code, and read up on the project, then go to the <a className="link-light" href="https://github.com/FooTAN/thegreatneuron/wiki">wiki</a>.
                         </JumbotronBlock>
                     </div>
                     <div className="col-md-6 col-12">
                         <JumbotronBlock title="Repository">
-                            Follow this link to clone this project <a className="link-light" href="https://github.com/FooTAN/thegreatneuron">Github</a>
+                            Follow this link to clone the project at <a className="link-light" href="https://github.com/FooTAN/thegreatneuron">Github</a>
                         </JumbotronBlock>
                     </div>
                 </div>
