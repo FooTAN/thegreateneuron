@@ -6,30 +6,41 @@ import NavBar from '../NavBar';
 import Footer from '../Footer';
 import ArticleList from '../../components/ArticleList';
 import ArticleDashboard from '../../components/ArticleDashboard';
+import Jumbotron from '../../components/Jumbotron';
+import ScaffoldComponent from '../../components/ScaffoldComponent';
 
 function App() {
   return (
     <>
       <div className="container py-3">
     <header>
-      <NavBar/>
+      <NavBar />
     </header>
 
     <main>
-      <section className="py-5 text-center container">
-        <div className="row py-lg-5">
-          <div className="col-lg-6 col-md-8 mx-auto">
-            <h1 className="fw-light">Latest From TGN</h1>
-            <p className="lead text-muted">Some Text heree</p>
-            <p>
-              Maybe more text here
-            </p>
+      <section className="pb-5 container">
+        <div className="row">
+          <div className="col-12 mb-1">
+              <ScaffoldComponent title="Breadcrumbs"></ScaffoldComponent>
+          </div>
+        </div>
+        <div className="row">
+          <div className="col-12">
+            <Jumbotron></Jumbotron>
+          </div>
+        </div>
+        <div className="row py-5">
+          <div className="col-12">
+            <ScaffoldComponent title="latest Cats vs dog AI Comparisons" height="256px" width="100%"></ScaffoldComponent>     
+          </div>
+        </div>
+        <div className="row py-5">
+          <div className="col-12">
+            <ArticleDashboard />
           </div>
         </div>
       </section>
-      <h2 className="display-6 text-center mb-4">Latest Dog vs Cat ComparisonENSURE</h2>
-      <ArticleDashboard />
-      {/*<UsersView />*/}
+
     </main>
 
     <footer className="pt-4 my-md-5 pt-md-5 border-top">

@@ -28,8 +28,13 @@ def helmSetup(name, hasDefaultValues = True):
 
 #for name, path in services.items():
 #  dockerSetup(name, path)
-docker_build('thegreatneuron-article', context='./src/services/aspnetcore/', dockerfile='./src/services/aspnetcore/article/dockerfile.dev')
-docker_build('thegreatneuron-client', context='./src/uis/react/client/', dockerfile='./src/uis/react/client/dockerfile.dev')
+docker_build('thegreatneuron-article', context='./src/services/aspnetcore/', dockerfile='./src/services/aspnetcore/article/dockerfile.dev', live_update=[
+  sync('./src/services/aspnetcore/article/', '/app'),
+])
+docker_build('thegreatneuron-client', context='./src/uis/react/client/', dockerfile='./src/uis/react/client/dockerfile.dev', live_update=[
+  sync('./src/uis/react/client/', '/app'),
+  run('cd /app && npm install', trigger='./src/uis/react/client/package.json')
+])
 
 
 helmSetup('ingress', False)

@@ -15,13 +15,11 @@ function ArticleDashboard() {
     }, []);
 
     return (
-        <div className="container">
         <div className="row">
             <div className="col">
                 <ArticleList articles={articles} />
             </div>
         </div>
-      </div>
     )
 }
 

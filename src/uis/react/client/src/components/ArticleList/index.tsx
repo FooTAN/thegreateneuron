@@ -7,13 +7,13 @@ interface Props{
 
 function ArticleList({articles}: Props) {
   return (
-    <ul className="list-group list-group-flush">
+    <>
       {articles.map((article:Article) => (
-        <li key={article.id} className="list-group-item">
+        <div key={article.id}>
             <ArticleFeaturette article={article} />
-        </li>
+        </div>
       ))}
-    </ul>
+    </>
   );
 }
 

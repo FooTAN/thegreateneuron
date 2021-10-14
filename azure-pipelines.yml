@@ -9,7 +9,7 @@ variables:
   articleServiceName: 'aspnetcore_tgn_article'
   clientServiceName: 'react_tgn_client'
   shouldBuildArticle: 'true'
-  shouldBuildClient: 'false'
+  shouldBuildClient: 'true'
 
 stages:
 - stage: Provision

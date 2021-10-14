@@ -1,7 +1,54 @@
-.articleInfo{
+.article-featurette{
+    min-height: 222px;
+    padding-top: 30px;
+}
+
+.article-featurette__row{
+    height: 456px;
+}
+.article-featurette__title-col{
+    height: 100%;
+}
+
+.article-featurette__title{
+    font-family: 'Poppins', sans-serif;
+    font-weight: 900;
+    letter-spacing: 3px;
+    font-size: 3.9em;
+    color: rgba(255, 255, 255,0.7);
+}
+
+.article-featurette--author-info{
+    font-family: 'Roboto', sans-serif;
+    font-weight: 300;
+    font-size: small;
+    color: rgb(156, 156, 156);
 
 }
 
-.articleInfo__text--default{
-    color: rgb(124, 124, 124);
+.article-featurette--text{
+    font-family: 'Roboto', sans-serif;
+    font-weight: 100;
+    font-size: xx-large;
+    color: rgb(156, 156, 156);
+}
+
+
+@import "../../../node_modules/bootstrap/scss/bootstrap.scss";
+
+@include media-breakpoint-down(md) {
+    .article-featurette--text{
+        font-size:small;
+    }
+
+    .article-featurette__title{
+        letter-spacing: 1px;
+        font-size: 2em;
+    }
+}
+
+@include media-breakpoint-down(sm) {
+    .article-featurette--text{
+        font-size: small;
+    }
 }

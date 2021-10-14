@@ -1,0 +1,23 @@
+.jumbotron{
+  background-repeat: no-repeat;
+  background-size: auto;
+  //rgb(159, 93, 161);
+  font-family: 'Roboto', sans-serif;
+  font-weight: 300;
+  font-size:1.5em;
+  color: rgb(241, 241, 241);
+}
+
+.jumbotron__img{
+    width: 50%;
+    opacity: 0.9;
+}
+
+@import "../../../node_modules/bootstrap/scss/bootstrap.scss";
+
+@include media-breakpoint-down(md) {
+    .jumbotron__img{
+        width: 100%;
+        opacity: 0.8;
+    }
+}
